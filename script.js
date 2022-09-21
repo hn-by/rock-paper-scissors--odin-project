@@ -61,61 +61,50 @@ function playRound(playerSelection, computerSelection) {
         win = null;
         output = "error";
     }
-
+   
     return output;
 
 }
 
 
+let button = document.querySelectorAll('button');
+let div = document.querySelector('.output');
+let computerDiv = document.querySelector('.computer')
+let playerDiv = document.querySelector('.player')
 
+let playerSelection;
+let playerScore = 0;
+let computerScore = 0;
+playerDiv.innerText = "you score = " + playerScore;
+computerDiv.innerText = "computer = " + computerScore;
+let p = document.createElement('p');
 
-function game() {
+button.forEach(b => {
+    b.addEventListener('click', e => {
 
-    let score = 0;
+        playerDiv.innerText = "you score = " + playerScore;
+        computerDiv.innerText = "computer = " + computerScore;
+        playerSelection = e.target.innerText;
+        div.innerText = playRound(playerSelection, getComputerChoice());
+        if (div.innerText.split('')[4] === "w") {
+            console.log(div.innerText.split('')[4])
+            playerDiv.innerText = "you score = " + ++playerScore;
+        } 
+        else if (div.innerText.split('')[4] === "l") {
+            console.log(div.innerText.split('')[4])
+            computerDiv.innerText = "computer = " + ++computerScore;
+        } 
 
-    for (let i = 1; i <= 5; i++) {
-
-        let playerChoice = prompt("Enter your choice!")
-
-        let round = playRound(playerChoice, getComputerChoice())
-        console.log(round)
-        
-        switch (win) {
-            case true:
-                score++;
-                break;
-            case false:
-                score--;
-                break;
-            default:
-                score;
-                break;
+        if (computerScore >= 5) {
+            playerScore = 0;
+            computerScore = 0;
+            p.innerText = 'YOU LOSE COMPUTER WINS'; 
+            document.body.appendChild(p);
+        } else if (playerScore >= 5) {
+            playerScore = 0;
+            computerScore = 0;
+            p.innerText = 'YOU WIN COMPUTER LOSES'; 
+            document.body.appendChild(p);
         }
-
-    }
-
-    console.log("score=" + score)
-    return score;
-
-}
-
-// console.log(game())
-
-function getResult() {
-
-    let result;
-    
-    if (game() < 0) {
-        result = "YOU LOSE";
-    } else if (game() > 0) {
-        result = "YOU WIN";
-    } else {
-        result = "TIE";
-    }
-
-    
-    return result;
-
-}
-
-console.log(getResult())
+    })
+})
